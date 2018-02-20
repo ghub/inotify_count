@@ -1,5 +1,24 @@
 # inotify_count
 
+- Host version and kernel
+- Guest version and kernel
+- What's the uid/gid on host?
+- What's the uid/gid on guest?
+- sysctl fs.inotify
+
+- Reboot host
+- Reboot guest
+- Is the host running out of inotify instances/watches? Use tail -f.
+- Is the guest running out?
+- Is the problem still happening on guest? strace
+- How many inotify instances are left?
+- Which processes are using the most instances?
+  find /proc/*/fd/* -type l -lname 'anon_inode:inotify' -print |cut -d/ -f3 |xargs -I '{}' -- ps --no-headers -o '%p %U %a' -p '{}' |uniq -c | sort -nr
+- Try sudo on guest
+
+
+
+
 inotify_add_watch, ENOSPC -> inotify_user.c
 
 inotify_user.c inotify_add_watch
@@ -9,3 +28,5 @@ inotify.h inc_inotify_watches, UCOUNT_INOTIFY_WATCHES
 ucount.c inc_ucount
 
 UCOUNT_INOTIFY_WATCHES
+
+
